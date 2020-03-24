@@ -45,6 +45,10 @@ private:
     Nod *last;
     Nod *copie_de_parcurs;
 public:
+    Lista_circulara circulara()
+    {
+        first=NULL;
+    }
     void Adauga_element(int element,int pozitie)
     {
         Nod *nod_nou=new Nod;
@@ -107,7 +111,6 @@ public:
         }
         first=inversa;
     }
-
     void afisare()
     {
         copie_de_parcurs=first;
@@ -218,7 +221,7 @@ int main()
     lista2.Adauga_element(5,2);
     cout<<lista2<<endl;
     lista3>>5>>6;
-     cout<<lista3<<endl;
+    cout<<lista3<<endl;
     lista4=lista2+lista3;
     cout<<lista4<<endl;
     lista4.Inversare_legaturi();
