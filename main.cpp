@@ -5,22 +5,39 @@
 using namespace std;
 ///istream fin("date.in");
 ///ofstream fout("date.out");
-#define nmax 1001
+const int nmax=1001;
 class Nod
 {
-public:
     int info;
     Nod *next;
-    Nod(const int x=0,Nod *urmatoru=NULL)
+public:
+    Nod(const int x=0,Nod *urmator=NULL)
     {
         info = x;
-        next = urmatoru;
+        next = urmator;
     }
     ~Nod()
     {
         next = NULL;
     }
+    inline Nod* get_next() const
+    {
+        return next;
+    }
+    inline int get_info() const
+    {
+        return info;
+    }
+    void set_next(Nod* urmator)
+    {
+        next = urmator;
+    }
+    void set_info(const int x)
+    {
+        info = x;
+    }
 };
+int poz;
 class Lista_circulara
 {
 private:
@@ -28,10 +45,10 @@ private:
     Nod *last;
     Nod *copie_de_parcurs;
 public:
-    void Adauga_element(int element)
+    void Adauga_element(int element,int pozitie)
     {
         Nod *nod_nou=new Nod;
-        nod_nou->info=element;
+        nod_nou->set_info(element);
         if(first==NULL)
         {
             first=nod_nou;
@@ -39,18 +56,16 @@ public:
         }
         else
         {
-            /*int cnt=1;
+            int cnt=1;
             copie_de_parcurs=first;
             while(cnt+1!=pozitie)
             {
                 cnt++;
-                copie_de_parcurs=copie_de_parcurs->next;
+                copie_de_parcurs=copie_de_parcurs->get_next();
                 ///first=first->next;
             }
-            nod_nou->next=copie_de_parcurs->next;
-            copie_de_parcurs->next=nod_nou;*/
-            last->next=nod_nou;
-            last=nod_nou;
+            nod_nou->set_next(copie_de_parcurs->get_next());
+            copie_de_parcurs->set_next(nod_nou);
         }
     }
     void Stergere_element(int pozitie)
@@ -59,7 +74,7 @@ public:
         if(pozitie==1)
         {
             nod_nou=first;
-            first=first->next;
+            first=first->get_next();
             delete(nod_nou);
         }
         else
@@ -69,11 +84,11 @@ public:
             while(cnt+1!=pozitie)
             {
                 ++cnt;
-                copie_de_parcurs=copie_de_parcurs->next;
+                copie_de_parcurs=copie_de_parcurs->get_next();
                 ///first=first->next;
             }
-            nod_nou=copie_de_parcurs->next;
-            copie_de_parcurs->next=copie_de_parcurs->next->next;
+            nod_nou=copie_de_parcurs->get_next();
+            copie_de_parcurs->set_next(copie_de_parcurs->get_next()->get_next());
             delete(nod_nou);
 
         }
@@ -85,8 +100,8 @@ public:
         Nod *inversa = NULL;
         while(temporara != NULL)
         {
-            list = list->next;
-            temporara->next = inversa;
+            list = list->get_next();
+            temporara->set_next(inversa);
             inversa = temporara;
             temporara = list;
         }
@@ -98,17 +113,17 @@ public:
         copie_de_parcurs=first;
         while(copie_de_parcurs!=NULL)
         {
-            cout<<copie_de_parcurs->info<<endl;
-            copie_de_parcurs=copie_de_parcurs->next;
+            cout<<copie_de_parcurs->get_info()<<endl;
+            copie_de_parcurs=copie_de_parcurs->get_next();
         }
 
     }
     void Transforma_in_Circulara()
     {
         copie_de_parcurs=first;
-        while(copie_de_parcurs->next)
-            copie_de_parcurs=copie_de_parcurs->next;
-        copie_de_parcurs->next=first;
+        while(copie_de_parcurs->get_next())
+            copie_de_parcurs=copie_de_parcurs->get_next();
+        copie_de_parcurs->set_next(first);
         last=copie_de_parcurs;
         copie_de_parcurs=first;
     }
@@ -116,12 +131,12 @@ public:
     {
         bool poz[nmax];
         memset(poz,0,sizeof(poz));
-        copie_de_parcurs=first->next;
+        copie_de_parcurs=first->get_next();
         int total=1,eliminate=0,i=1;
         while(copie_de_parcurs!=first)
         {
             ++total;
-            copie_de_parcurs=copie_de_parcurs->next;
+            copie_de_parcurs=copie_de_parcurs->get_next();
         }
         copie_de_parcurs=first;
         int contor=0;
@@ -133,12 +148,12 @@ public:
                     contor++;
                 if(contor==k)
                 {
-                    cout<<copie_de_parcurs->info<<" ";
+                    cout<<copie_de_parcurs->get_info()<<" ";
                     contor=0;
                     ++eliminate;
                     poz[i]=true;
                 }
-                copie_de_parcurs=copie_de_parcurs->next;
+                copie_de_parcurs=copie_de_parcurs->get_next();
                 ++i;
                 if(i>total)
                     i-=total;
@@ -152,16 +167,17 @@ public:
     {
         Lista_circulara lista_finala;
         copie_de_parcurs = first;
+        int cnt=1;
         while(copie_de_parcurs)
         {
-            lista_finala.Adauga_element(copie_de_parcurs->info);
-            copie_de_parcurs=copie_de_parcurs->next;
+            lista_finala.Adauga_element(copie_de_parcurs->get_info(),cnt++);
+            copie_de_parcurs=copie_de_parcurs->get_next();
         }
         copie_de_parcurs = lista_de_adaugat.first;
         while(copie_de_parcurs)
         {
-            lista_finala.Adauga_element(copie_de_parcurs->info);
-            copie_de_parcurs=copie_de_parcurs->next;
+            lista_finala.Adauga_element(copie_de_parcurs->get_info(),cnt++);
+            copie_de_parcurs=copie_de_parcurs->get_next();
         }
         return lista_finala;
     }
@@ -173,37 +189,39 @@ ostream& operator << (ostream& output,const Lista_circulara &lista)
     Nod* curent = lista.first;
     while(curent != NULL)
     {
-        output<<curent->info<<' ';
-        curent=curent ->next;
+        output<<curent->get_info()<<' ';
+        curent=curent ->get_next();
     }
     return output;
 }
 istream& operator >> (istream& input,  Lista_circulara &lista)
 {
-    int valoare;
-    input >> valoare;
-    lista.Adauga_element(valoare);
+    int valoare,pozitie;
+    input >> valoare >> pozitie;
+    lista.Adauga_element(valoare,pozitie);
     return input;
 }
 Lista_circulara& operator >> (Lista_circulara &lista,  int valoare)
 {
-    lista.Adauga_element(valoare);
+    ++poz;
+    lista.Adauga_element(valoare,poz);
     return lista;
 }
 int main()
 {
     int a=11;
     Lista_circulara lista2,lista3,lista4;
-    lista2.Adauga_element(1);
-    lista2.Adauga_element(2);
-    lista2.Adauga_element(3);
-    lista2.Adauga_element(4);
-    lista3>>9>>10;
-    lista2>>5>>6>>7>>8;
+    lista2.Adauga_element(1,1);
+    lista2.Adauga_element(2,2);
+    lista2.Adauga_element(3,3);
+    lista2.Adauga_element(4,4);
+    lista2.Adauga_element(5,2);
+    cout<<lista2<<endl;
+    lista3>>5>>6;
+     cout<<lista3<<endl;
     lista4=lista2+lista3;
     cout<<lista4<<endl;
-    lista4.Transforma_in_Circulara();
-    lista4.Elimina_elemente(3);
-
+    lista4.Inversare_legaturi();
+    cout<<lista4;
     return 0;
 }
