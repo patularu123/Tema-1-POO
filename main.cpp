@@ -70,6 +70,8 @@ public:
             }
             nod_nou->set_next(copie_de_parcurs->get_next());
             copie_de_parcurs->set_next(nod_nou);
+            last=nod_nou; /// am transformat o in circulara
+            last->set_next(first);
         }
     }
     void Stergere_element(int pozitie)
@@ -99,7 +101,7 @@ public:
     }
     void Inversare_legaturi()
     {
-        Nod *list=first;
+        Nod *list=last;
         Nod *temporara = list;
         Nod *inversa = NULL;
         while(temporara != NULL)
@@ -113,15 +115,17 @@ public:
     }
     void afisare()
     {
-        copie_de_parcurs=first;
-        while(copie_de_parcurs!=NULL)
+        copie_de_parcurs=first->get_next();
+        cout<<first->get_info()<<" ";
+        while(copie_de_parcurs!=first)
         {
-            cout<<copie_de_parcurs->get_info()<<endl;
+            cout<<copie_de_parcurs->get_info()<<" ";
             copie_de_parcurs=copie_de_parcurs->get_next();
         }
+        cout<<endl;
 
     }
-    void Transforma_in_Circulara()
+    /*void Transforma_in_Circulara()
     {
         copie_de_parcurs=first;
         while(copie_de_parcurs->get_next())
@@ -129,11 +133,12 @@ public:
         copie_de_parcurs->set_next(first);
         last=copie_de_parcurs;
         copie_de_parcurs=first;
-    }
+    }*/
     void Elimina_elemente(int k)
     {
         bool poz[nmax];
-        memset(poz,0,sizeof(poz));
+        for(int i=0;i<nmax;++i)
+            poz[i]=0;
         copie_de_parcurs=first->get_next();
         int total=1,eliminate=0,i=1;
         while(copie_de_parcurs!=first)
@@ -169,18 +174,21 @@ public:
     Lista_circulara operator + (const Lista_circulara &lista_de_adaugat)
     {
         Lista_circulara lista_finala;
-        copie_de_parcurs = first;
         int cnt=1;
-        while(copie_de_parcurs)
+        copie_de_parcurs = first->get_next();
+        lista_finala.Adauga_element(first->get_info(),cnt++);
+        while(copie_de_parcurs!=first)
         {
             lista_finala.Adauga_element(copie_de_parcurs->get_info(),cnt++);
             copie_de_parcurs=copie_de_parcurs->get_next();
         }
-        copie_de_parcurs = lista_de_adaugat.first;
-        while(copie_de_parcurs)
+        copie_de_parcurs = lista_de_adaugat.first->get_next();
+        lista_finala.Adauga_element(lista_de_adaugat.first->get_info(),cnt++);
+        while(copie_de_parcurs!=lista_de_adaugat.first)
         {
             lista_finala.Adauga_element(copie_de_parcurs->get_info(),cnt++);
             copie_de_parcurs=copie_de_parcurs->get_next();
+
         }
         return lista_finala;
     }
@@ -218,13 +226,14 @@ int main()
     lista2.Adauga_element(2,2);
     lista2.Adauga_element(3,3);
     lista2.Adauga_element(4,4);
-    lista2.Adauga_element(5,2);
-    cout<<lista2<<endl;
+    ///lista2.Adauga_element(5,2);
+    lista2.afisare();
     lista3>>5>>6;
-    cout<<lista3<<endl;
+    lista3.afisare();
     lista4=lista2+lista3;
-    cout<<lista4<<endl;
+   /// cout<<lista4<<endl; daca afisez asa se vede ca lista este circulara
+    lista4.afisare(); ///afisarea corecta
     lista4.Inversare_legaturi();
-    cout<<lista4;
+    lista4.afisare();
     return 0;
 }
