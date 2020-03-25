@@ -226,7 +226,6 @@ int main()
     lista2.Adauga_element(2,2);
     lista2.Adauga_element(3,3);
     lista2.Adauga_element(4,4);
-    ///lista2.Adauga_element(5,2);
     lista2.afisare();
     lista3>>5>>6;
     lista3.afisare();
@@ -236,4 +235,5 @@ int main()
     lista4.Inversare_legaturi();
     lista4.afisare();
     return 0;
+    
 }
