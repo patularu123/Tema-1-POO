@@ -230,10 +230,10 @@ int main()
     lista3>>5>>6;
     lista3.afisare();
     lista4=lista2+lista3;
-   /// cout<<lista4<<endl; daca afisez asa se vede ca lista este circulara
-    lista4.afisare(); ///afisarea corecta
+    lista4.afisare();
     lista4.Inversare_legaturi();
     lista4.afisare();
+    lista4.Elimina_elemente(2);
     return 0;
-    
 }
+
