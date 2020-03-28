@@ -45,10 +45,22 @@ private:
     Nod *last;
     Nod *copie_de_parcurs;
 public:
-    Lista_circulara circulara()
+    Lista_circulara()
     {
         first=NULL;
     }
+     ~Lista_circulara()
+     {
+         copie_de_parcurs = first->get_next();
+         Nod *x;
+         while(copie_de_parcurs!=first)
+         {
+             x = copie_de_parcurs;
+             copie_de_parcurs=copie_de_parcurs->get_next();
+             //delete x;
+         }
+       //  delete first;
+     }
     void Adauga_element(int element,int pozitie)
     {
         Nod *nod_nou=new Nod;
@@ -125,7 +137,7 @@ public:
         cout<<endl;
 
     }
-    /*void Transforma_in_Circulara()
+    /* Transforma_in_Circulara()
     {
         copie_de_parcurs=first;
         while(copie_de_parcurs->get_next())
@@ -137,8 +149,9 @@ public:
     void Elimina_elemente(int k)
     {
         bool poz[nmax];
-        for(int i=0;i<nmax;++i)
+        for(int i=0; i<nmax; ++i)
             poz[i]=0;
+        Nod *q;
         copie_de_parcurs=first->get_next();
         int total=1,eliminate=0,i=1;
         while(copie_de_parcurs!=first)
@@ -148,25 +161,44 @@ public:
         }
         copie_de_parcurs=first;
         int contor=0;
-        while(total!=eliminate)
+        if(k>1)
         {
-            while(copie_de_parcurs)
+            while(total!=eliminate)
             {
-                if(!poz[i])
-                    contor++;
-                if(contor==k)
+                while(copie_de_parcurs)
                 {
-                    cout<<copie_de_parcurs->get_info()<<" ";
-                    contor=0;
-                    ++eliminate;
-                    poz[i]=true;
+                    // if(!poz[i])
+                    contor++;
+                    if(contor+1==k)
+                    {
+                        cout<<copie_de_parcurs->get_next()->get_info()<<" ";
+                        q=copie_de_parcurs->get_next();
+                        contor=0;
+                        ++eliminate;
+                        //poz[i]=true;
+                        if(q==first)
+                            first=first->get_next();
+                        copie_de_parcurs->set_next(copie_de_parcurs->get_next()->get_next());
+                        delete q;
+                    }
+                    copie_de_parcurs=copie_de_parcurs->get_next();
+                    if(eliminate==total)
+                        break;
                 }
-                copie_de_parcurs=copie_de_parcurs->get_next();
-                ++i;
-                if(i>total)
-                    i-=total;
-                if(eliminate==total)
-                    break;
+            }
+        }
+        else
+        {
+            Nod *q,*p;
+            q=first;
+            p=first;
+            while(p)
+            {
+                ++eliminate;
+                cout<<p->get_info()<<' ';
+                p=p->get_next();
+                Stergere_element(1);
+                if(eliminate==total) break;
             }
         }
 
@@ -197,8 +229,9 @@ public:
 };
 ostream& operator << (ostream& output,const Lista_circulara &lista)
 {
-    Nod* curent = lista.first;
-    while(curent != NULL)
+    Nod* curent = lista.first->get_next();
+    output<<lista.first<<' ';
+    while(curent != lista.first)
     {
         output<<curent->get_info()<<' ';
         curent=curent ->get_next();
@@ -236,4 +269,3 @@ int main()
     lista4.Elimina_elemente(2);
     return 0;
 }
-
