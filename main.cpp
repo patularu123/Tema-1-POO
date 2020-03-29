@@ -49,18 +49,36 @@ public:
     {
         first=NULL;
     }
-     ~Lista_circulara()
-     {
-         copie_de_parcurs = first->get_next();
-         Nod *x;
-         while(copie_de_parcurs!=first)
-         {
-             x = copie_de_parcurs;
-             copie_de_parcurs=copie_de_parcurs->get_next();
-             //delete x;
-         }
-       //  delete first;
-     }
+    ~Lista_circulara()
+    {
+        copie_de_parcurs = first->get_next();
+        Nod *x;
+        while(copie_de_parcurs!=first)
+        {
+            x = copie_de_parcurs;
+            copie_de_parcurs=copie_de_parcurs->get_next();
+            delete x;
+        }
+        delete first;
+    }
+    Lista_circulara(const Lista_circulara &lista) ///constructor de copiere
+    {
+        Nod *listaPrim = lista.first;
+        Nod *prim;
+        prim = new Nod;
+        prim->set_info(listaPrim->get_info());
+        Nod *p = listaPrim->get_next();
+        Nod *parcurgere, *precedent = prim;
+        while (p != listaPrim)
+        {
+            parcurgere = new Nod;
+            parcurgere->set_info(p->get_info());
+            precedent->set_next(parcurgere);
+            precedent = parcurgere;
+            p = p->get_next();
+        }
+        precedent->set_next(prim);
+    }
     void Adauga_element(int element,int pozitie)
     {
         Nod *nod_nou=new Nod;
@@ -198,7 +216,8 @@ public:
                 cout<<p->get_info()<<' ';
                 p=p->get_next();
                 Stergere_element(1);
-                if(eliminate==total) break;
+                if(eliminate==total)
+                    break;
             }
         }
 
@@ -253,8 +272,7 @@ Lista_circulara& operator >> (Lista_circulara &lista,  int valoare)
 }
 int main()
 {
-    int a=11;
-    Lista_circulara lista2,lista3,lista4;
+    Lista_circulara lista2,lista3;
     lista2.Adauga_element(1,1);
     lista2.Adauga_element(2,2);
     lista2.Adauga_element(3,3);
@@ -262,7 +280,7 @@ int main()
     lista2.afisare();
     lista3>>5>>6;
     lista3.afisare();
-    lista4=lista2+lista3;
+    Lista_circulara lista4=lista2+lista3;
     lista4.afisare();
     lista4.Inversare_legaturi();
     lista4.afisare();
