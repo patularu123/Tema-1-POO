@@ -148,12 +148,15 @@ public:
     }
     void afisare()
     {
+        if(!first) cout<<"[]";
+        else{
         copie_de_parcurs=first->get_next();
         cout<<first->get_info()<<" ";
         while(copie_de_parcurs!=first)
         {
             cout<<copie_de_parcurs->get_info()<<" ";
             copie_de_parcurs=copie_de_parcurs->get_next();
+        }
         }
         cout<<endl;
 
