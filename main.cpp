@@ -148,18 +148,19 @@ public:
     }
     void afisare()
     {
-        if(!first) cout<<"[]";
-        else{
-        copie_de_parcurs=first->get_next();
-        cout<<first->get_info()<<" ";
-        while(copie_de_parcurs!=first)
+        if(!first)
+            cout<<"[]";
+        else
         {
-            cout<<copie_de_parcurs->get_info()<<" ";
-            copie_de_parcurs=copie_de_parcurs->get_next();
+            copie_de_parcurs=first->get_next();
+            cout<<first->get_info()<<" ";
+            while(copie_de_parcurs!=first)
+            {
+                cout<<copie_de_parcurs->get_info()<<" ";
+                copie_de_parcurs=copie_de_parcurs->get_next();
+            }
         }
-        }
-        cout<<endl;
-
+         cout<<endl;
     }
     /* Transforma_in_Circulara()
     {
@@ -205,7 +206,10 @@ public:
                     if(copie_de_parcurs->get_next()!=NULL)
                         copie_de_parcurs=copie_de_parcurs->get_next();
                     if(eliminate==total)
-                        break;
+                        {
+                            Stergere_element(1);
+                            break;
+                        }
                 }
             }
         }
@@ -292,5 +296,6 @@ int main()
     lista4.Inversare_legaturi();
     lista4.afisare();
     lista4.Elimina_elemente(2);
+    lista4.afisare();
     return 0;
 }
