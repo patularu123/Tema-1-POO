@@ -6,6 +6,10 @@ using namespace std;
 ///istream fin("date.in");
 ///ofstream fout("date.out");
 const int nmax=1001;
+struct abc
+{
+    int val,poz;
+} a;
 class Nod
 {
     int info;
@@ -37,7 +41,6 @@ public:
         info = x;
     }
 };
-int poz;
 class Lista_circulara
 {
 private:
@@ -166,12 +169,9 @@ public:
     }*/
     void Elimina_elemente(int k)
     {
-        bool poz[nmax];
-        for(int i=0; i<nmax; ++i)
-            poz[i]=0;
         Nod *q;
         copie_de_parcurs=first->get_next();
-        int total=1,eliminate=0,i=1;
+        int total=1,eliminate=0;
         while(copie_de_parcurs!=first)
         {
             ++total;
@@ -199,7 +199,8 @@ public:
                         copie_de_parcurs->set_next(copie_de_parcurs->get_next()->get_next());
                         delete q;
                     }
-                    copie_de_parcurs=copie_de_parcurs->get_next();
+                    if(copie_de_parcurs->get_next()!=NULL)
+                        copie_de_parcurs=copie_de_parcurs->get_next();
                     if(eliminate==total)
                         break;
                 }
@@ -207,8 +208,7 @@ public:
         }
         else
         {
-            Nod *q,*p;
-            q=first;
+            Nod *p;
             p=first;
             while(p)
             {
@@ -264,21 +264,25 @@ istream& operator >> (istream& input,  Lista_circulara &lista)
     lista.Adauga_element(valoare,pozitie);
     return input;
 }
-Lista_circulara& operator >> (Lista_circulara &lista,  int valoare)
+Lista_circulara& operator >> (Lista_circulara &lista,  const abc b)
 {
-    ++poz;
-    lista.Adauga_element(valoare,poz);
+    lista.Adauga_element(b.val,b.poz);
     return lista;
 }
 int main()
 {
+    abc b;
+    a.poz=1;
+    a.val=5;
+    b.poz=2;
+    b.val=6;
     Lista_circulara lista2,lista3;
     lista2.Adauga_element(1,1);
     lista2.Adauga_element(2,2);
     lista2.Adauga_element(3,3);
     lista2.Adauga_element(4,4);
     lista2.afisare();
-    lista3>>5>>6;
+    lista3>>a>>b;
     lista3.afisare();
     Lista_circulara lista4=lista2+lista3;
     lista4.afisare();
